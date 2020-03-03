@@ -18,9 +18,9 @@ app.use('/',podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
 res.status(200).podiumSend(`
+<div class="image">
+    <img src="https://as.com/epik/imagenes/2019/01/20/portada/1548001612_230497_1548001814_noticia_normal.jpg"/>
 <div>
-    <img src="https://as.com/epik/imagenes/2019/01/20/portada/1548001612_230497_1548001814_noticia_normal.jpg" height="600" width="800"/>
-    <div>
 `);
 });
 
