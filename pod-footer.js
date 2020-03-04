@@ -26,13 +26,12 @@ app.use('/assets',express.static('./public'));
 //   res.status(200).sendFile(podlet.css, err => {});
 // });
 
-//podlet.css({value:`/assets/footer.css` });
+podlet.css([{value:`http://localhost:3005/assets/footer.css`}]);
 
-app.get('/footer.css',(req,res)=>res.status(200).sendFile('./assets/footer.css'))
+//app.get('/footer.css',(req,res)=>res.status(200).sendFile('./assets/footer.css'))
 
 app.get(podlet.content(), (req, res) => {
 res.status(200).podiumSend(`
-<link rel="stylesheet" href="http://127.0.0.1:3005/assets/footer.css">
 <footer>De algo sirve</footer>
 `);
 });
