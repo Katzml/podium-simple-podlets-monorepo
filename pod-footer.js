@@ -7,20 +7,32 @@ const app = express();
 const podlet = new Podlet({
   name: "footerFragment",
   version: "1.0.0",
-  pathname: "/",
+  pathname: "/footer",
   proxy:{"assets":"/assets"},
   manifest: "/manifest.json",
-  content: "/",
-  development: true
+  content: "/footer",
+  development: true,
+  prefix:true
 });
 
-app.use('/',podlet.middleware());
-podlet.css({value:`http://localhost:3005/assets/footer.css`,type:`text/css`});
-app.use('/assets',express.static(path.join(__dirname, '/public')));
+app.use('/footer',podlet.middleware());
+app.use('/assets',express.static('./public'));
 
-app.get('/assets',(req,res)=>res.status(200).sendFile(`http://localhost:3005/assets/footer.css`));
-app.get('/', (req, res) => {
+// podlet.css({value:`http://127.0.0.1:3005/assets/footer.css`,type:`text/css`});
+// app.get('/assets',(req,res)=>res.status(200).sendFile(`http://127.0.0.1:3005/assets/footer.css`));
+
+
+// app.get('/footer', (req, res) => {
+//   res.status(200).sendFile(podlet.css, err => {});
+// });
+
+//podlet.css({value:`/assets/footer.css` });
+
+app.get('/footer.css',(req,res)=>res.status(200).sendFile('./assets/footer.css'))
+
+app.get(podlet.content(), (req, res) => {
 res.status(200).podiumSend(`
+<link rel="stylesheet" href="http://127.0.0.1:3005/assets/footer.css">
 <footer>De algo sirve</footer>
 `);
 });
