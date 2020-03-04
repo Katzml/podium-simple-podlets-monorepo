@@ -1,5 +1,6 @@
 const express = require('express');
 const Podlet = require("@podium/podlet");
+const path = require('path');
 
 //instances
 const app = express();
@@ -7,36 +8,29 @@ const podlet = new Podlet({
   name: "footerFragment",
   version: "1.0.0",
   pathname: "/",
+  proxy:{"assets":"/assets"},
   manifest: "/manifest.json",
   content: "/",
-  development: true,
-  css:[{}]
+  development: true
 });
-
 
 app.use('/',podlet.middleware());
-app.use(express.static(__dirname + '/public/'));
-app.get('/assets.css', (req, res) => {
-  res.status(200).sendFile('./css/footer.css', err => {});
-});
+podlet.css({value:`http://localhost:3005/assets/footer.css`,type:`text/css`});
+app.use('/assets',express.static(path.join(__dirname, '/public')));
 
-podlet.css({value:'./css/footer.css'});
-
-app.get(podlet.content(), (req, res) => {
+app.get('/assets',(req,res)=>res.status(200).sendFile(`http://localhost:3005/assets/footer.css`));
+app.get('/', (req, res) => {
 res.status(200).podiumSend(`
-<div class="partebaja">
 <footer>De algo sirve</footer>
-</div>
 `);
 });
-
 
 
 app.get(podlet.manifest(),(req,res)=>{
     res.status(200).send(podlet);
 });
 
-console.info(podlet.css);
+console.info(podlet.css());
 app.listen(3005, () => {
   console.info("pod-footer on");
 });
